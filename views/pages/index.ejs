@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <title>Index Page</title>
+    <script src="/assets/jquery.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+<% if (!username) { %>
+    <h3>Ты не залогинен чорт!</h3>
+<% } else { %>
+    <h3>Привет, мой друг <%=username %></h3>
+<% } %>
+
+</body>
+
+</html>

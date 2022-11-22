@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>createUser</title>
+    <script src="/assets/jquery.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+    <form method='POST' action="api/user/create">
+        <h2>Добавление нового пользователя</h2>
+        <h2>Данное место доступно только пользователям с правами Admin (нужно сделать проверку)</h2>
+        <input type="text" name="username" placeholder="Логин" required autofocus="" autocomplete="off" />
+        <input type="password" name="password" placeholder="Пароль" required autocomplete="off" />
+        <button type='submit'>Добавить пользователя</button>
+    </form>
+
+</body>
+
+</html>

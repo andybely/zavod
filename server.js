@@ -58,6 +58,10 @@ app.get('/logout', async (req, res) => {
   await db.deleteSession(req);
 })
 
+/** :( */
+app.get('/createUser', async (req, res) => {
+  res.render('pages/createUser');
+})
 
 
 app.post('/api/user/create', async (req, res) => {
@@ -72,7 +76,6 @@ app.post('/auth/login', async (req, res) => {
 
   try {
     const session = await db.login(req.body);
-
     res.cookie('session', session.id);
     res.redirect('/')
   } catch (e) {

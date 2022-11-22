@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -10,9 +11,12 @@
 
 <% if (!username) { %>
     <h3>Ты не залогинен чорт!</h3>
+    <a href= "login">Вход</a> 
 <% } else { %>
     <h3>Привет, мой друг <%=username %></h3>
+    <a href= "logout">Выход</a>
 <% } %>
+
 
 </body>
 

@@ -13,14 +13,14 @@ class Database {
   #role;
   #session;
 
-  constructor({database, username, password, host, dialect}) {
+  constructor({ database, username, password, host, dialect }) {
     this.#sequelize = new Sequelize(
       database,
       username,
       password, {
-        host,
-        dialect,
-      }
+      host,
+      dialect,
+    }
     );
 
     this.#employee = this.#sequelize.define('Employee', Employee, {
@@ -74,6 +74,24 @@ class Database {
     req.user = user;
   }
 
+  async deleteSession(req) {
+    if (!req.cookies.session) return;
+
+    const session = await this.#session.findOne({
+      where: {
+        sessionId: req.cookies.session
+      }
+    });
+
+    if (!session) return;
+
+    await this.#session.destroy({
+      where: {
+        id: session.id
+      }
+    })
+  }
+
   async login({ username, password }) {
     if (!username || !password) {
       throw new Error('Укажите username и password');
@@ -82,8 +100,11 @@ class Database {
     const user = await this.#user.findOne({
       where: {
         username,
+        password,
       }
     });
+
+
 
     if (!user) {
       throw new Error('Неверный логин или пароль');
@@ -99,20 +120,20 @@ class Database {
     return { id: sessionKey }
   }
 
-  async addUser({ username, password }, req) {
+  async addUser(body, req) {
 
     if (!req.user) {
       throw new Error('Вы не авторизованы!');
     }
 
     // TODO: проверять права доступа для создания нового юзера
-    if (!username || !password) {
+    if (!body.username || !body.password) {
       throw new Error('Укажите username и password');
     }
 
     const user = await this.#user.findOne({
       where: {
-        username,
+        username: body.username,
       }
     });
 
@@ -121,7 +142,7 @@ class Database {
     }
 
     await this.#user.create({
-      username, password
+      username: body.username, password: body.password
     });
 
     return { message: "Пользователь добавлен!" };

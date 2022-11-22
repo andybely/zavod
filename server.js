@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+
 
 
 const Database = require('./database');
@@ -27,6 +29,9 @@ app.use('/assets', [
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 // добавить юзера к запросу
 app.use(async (req, res, next) => {
@@ -42,11 +47,24 @@ app.get('/', async (req, res) => {
   });
 })
 
+/** :( */
+app.get('/login', async (req, res) => {
+  res.render('pages/login');
+})
+
+app.get('/logout', async (req, res) => {
+  res.cookie('session', '');
+  res.redirect('/')
+  await db.deleteSession(req);
+})
+
+
+
 app.post('/api/user/create', async (req, res) => {
   try {
-    res.send(await db.addUser(req.body, req.user));
+    res.send(await db.addUser(req.body, req));
   } catch (e) {
-    res.send({error: e.message});
+    res.send({ error: e.message });
   }
 });
 
@@ -56,9 +74,9 @@ app.post('/auth/login', async (req, res) => {
     const session = await db.login(req.body);
 
     res.cookie('session', session.id);
-    res.send({ success: true });
+    res.redirect('/')
   } catch (e) {
-    res.send({error: e.message});
+    res.send({ error: e.message });
   }
 
 });

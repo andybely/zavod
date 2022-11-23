@@ -4,7 +4,12 @@ const Employee = require('./models/Employee');
 const User = require('./models/User');
 const Role = require('./models/Role');
 const Session = require('./models/Session');
+const Acceptance = require('./models/Acceptance');
+const Issuance = require('./models/Issuance');
+const Sector = require('./models/Sector');
+const Product = require('./models/Product');
 const crypto = require("crypto");
+
 
 class Database {
   #sequelize;
@@ -12,6 +17,11 @@ class Database {
   #employee;
   #role;
   #session;
+  #acceptance;
+  #issuance;
+  #sector;
+  #product;
+  
 
   constructor({ database, username, password, host, dialect }) {
     this.#sequelize = new Sequelize(
@@ -43,11 +53,27 @@ class Database {
       timestamps: false,
     });
 
+    this.#acceptance = this.#sequelize.define('Acceptance', Acceptance, {
+      tableName: 'Acceptance',
+      timestamps: false,
+    });
+
+    this.#sector = this.#sequelize.define('Sector', Sector, {
+      tableName: 'Sector',
+      timestamps: false,
+    });
+
+    this.#product = this.#sequelize.define('Product', Product, {
+      tableName: 'Product',
+      timestamps: false,
+    });
+
+
     this.#employee.User = this.#employee.belongsTo(this.#user);
     this.#employee.Role = this.#employee.belongsTo(this.#role);
     this.#session.User = this.#session.belongsTo(this.#user);
   }
-
+  
   syncronize() {
     this.#sequelize.sync({ alter: true });
   }
@@ -66,8 +92,10 @@ class Database {
     const user = await this.#user.findOne({
       where: {
         id: session.UserId,
-      }
+      }      
     });
+
+    
 
     if (!user) return;
 
@@ -103,7 +131,6 @@ class Database {
         password,
       }
     });
-
 
 
     if (!user) {
@@ -148,6 +175,34 @@ class Database {
     return { message: "Пользователь добавлен!" };
   }
 }
+
+
+// const users = await this.#user.findOne({
+    
+//     }
+   
+//   });
+//  console.info(await user.getDetails())
+
+
+// const users = await this.#user.findOne({
+//   console.log(users),
+//   }
+// });
+
+
+// app.get('/user', async function(req, res) {
+//   const user = await this.User.findAll({ raw: true }).then(users => {
+//     console.log(users);
+//   }).catch(err => console.log(err));
+// });
+
+
+// user.findAll({raw:true}).then(users=>{
+//   console.log(users);
+// }).catch(err=>console.log(err));
+
+// console.log(user);
 
 
 module.exports = Database;

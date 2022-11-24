@@ -60,13 +60,16 @@ app.get('/logout', async (req, res) => {
 
 /** :( */
 app.get('/createUser', async (req, res) => {
-  res.render('pages/createUser');
+  res.render('pages/createUser', {
+    message: req.query.message || ''
+  });
 })
 
 
 app.post('/api/user/create', async (req, res) => {
   try {
-    res.send(await db.addUser(req.body, req));
+    const result = await db.addUser(req.body, req);// { message: "Пользователь добавлен! " + body.username };
+    res.redirect('/createUser?message=' + result.message)
   } catch (e) {
     res.send({ error: e.message });
   }
@@ -83,6 +86,24 @@ app.post('/auth/login', async (req, res) => {
   }
 
 });
+
+
+app.get('/users', async function(req, res) {
+ const users = await db.getAllUsers()
+ //res.send(users)
+ res.render('pages/users', {
+  users: users,
+ } );
+});
+
+app.get('/employees', async function(req, res) {
+  const employees = await db.getAllEmployees()
+  //res.send(employees)
+  res.render('pages/employees', {
+    employees: employees,
+  } );
+ });
+
 
 /** Запускаем сервер */
 app.listen(port, () => {

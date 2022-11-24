@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <script src="/assets/jquery.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+Список пользователей
+<%# комментарий %>
+<% for (let user of users) { %>
+    <p>#<%=user.id %> | <%=user.username %> | <%=user.password %>
+    <%} %>
+</body>
+
+</html>

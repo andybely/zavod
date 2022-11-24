@@ -21,7 +21,7 @@ class Database {
   #issuance;
   #sector;
   #product;
-  
+
 
   constructor({ database, username, password, host, dialect }) {
     this.#sequelize = new Sequelize(
@@ -58,6 +58,11 @@ class Database {
       timestamps: false,
     });
 
+    this.#issuance = this.#sequelize.define('Issuance', Issuance, {
+      tableName: 'Issuance',
+      timestamps: false,
+    });
+
     this.#sector = this.#sequelize.define('Sector', Sector, {
       tableName: 'Sector',
       timestamps: false,
@@ -72,8 +77,17 @@ class Database {
     this.#employee.User = this.#employee.belongsTo(this.#user);
     this.#employee.Role = this.#employee.belongsTo(this.#role);
     this.#session.User = this.#session.belongsTo(this.#user);
+    //дописать
   }
-  
+
+  async getAllUsers(){
+    return this.#user.findAll()  
+  }
+
+  async getAllEmployees(){
+    return this.#employee.findAll()  
+  }
+
   syncronize() {
     this.#sequelize.sync({ alter: true });
   }
@@ -92,10 +106,9 @@ class Database {
     const user = await this.#user.findOne({
       where: {
         id: session.UserId,
-      }      
+      }
     });
 
-    
 
     if (!user) return;
 
@@ -172,37 +185,8 @@ class Database {
       username: body.username, password: body.password
     });
 
-    return { message: "Пользователь добавлен!" };
+    return { message: "Пользователь добавлен! " + body.username };
   }
 }
-
-
-// const users = await this.#user.findOne({
-    
-//     }
-   
-//   });
-//  console.info(await user.getDetails())
-
-
-// const users = await this.#user.findOne({
-//   console.log(users),
-//   }
-// });
-
-
-// app.get('/user', async function(req, res) {
-//   const user = await this.User.findAll({ raw: true }).then(users => {
-//     console.log(users);
-//   }).catch(err => console.log(err));
-// });
-
-
-// user.findAll({raw:true}).then(users=>{
-//   console.log(users);
-// }).catch(err=>console.log(err));
-
-// console.log(user);
-
 
 module.exports = Database;

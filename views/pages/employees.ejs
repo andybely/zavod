@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <script src="/assets/jquery.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+Список сотрудников
+
+<% for (let employee of employees) { %>
+    <p>#<%=employee.id %> | <%=employee.surname %> <%=employee.name %> <%=employee.middleName  %> <%=employee.dateOfBirth %> <%=employee.address %> <%=employee.phone %> <%=employee.jobTitle %>
+    <%} %>
+
+
+</body>
+<h1></h1><a href= "login">На главное меню</a>
+</html>

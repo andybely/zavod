@@ -75,17 +75,19 @@ class Database {
 
 
     this.#employee.User = this.#employee.belongsTo(this.#user);
-    this.#employee.Role = this.#employee.belongsTo(this.#role);
+    // this.#employee.Role = this.#employee.belongsTo(this.#role); // перевыдал на юзера
+    this.#user.Role = this.#user.belongsTo(this.#role);
     this.#session.User = this.#session.belongsTo(this.#user);
+
     //дописать
   }
 
-  async getAllUsers(){
-    return this.#user.findAll()  
+  async getAllUsers() {
+    return this.#user.findAll()
   }
 
-  async getAllEmployees(){
-    return this.#employee.findAll()  
+  async getAllEmployees() {
+    return this.#employee.findAll()
   }
 
   syncronize() {
@@ -148,6 +150,7 @@ class Database {
 
     if (!user) {
       throw new Error('Неверный логин или пароль');
+      // return { message2: "Неверный логин или пароль"};
     }
 
     const sessionKey = crypto.randomBytes(16).toString('hex');
@@ -163,12 +166,19 @@ class Database {
   async addUser(body, req) {
 
     if (!req.user) {
-      throw new Error('Вы не авторизованы!');
+      // throw new Error('Вы не авторизованы!');
+      return { message: "Вы не авторизованы!" };
+    }
+
+    if (!body.username || !body.password) {
+      // throw new Error('Укажите username и password');
+      return { message: "Укажите username и password" };
     }
 
     // TODO: проверять права доступа для создания нового юзера
-    if (!body.username || !body.password) {
-      throw new Error('Укажите username и password');
+    if (req.user.RoleId != 1) {
+      // throw new Error('Вы не админ!!!'); не надо 
+      return { message: "Вы не админ!!!" };
     }
 
     const user = await this.#user.findOne({
@@ -178,14 +188,15 @@ class Database {
     });
 
     if (user) {
-      throw new Error('Такой пользователь уже существует');
+      // throw new Error('Такой пользователь уже существует'); не надо 
+      return { message: "Пользователь " + body.username + " уже существует!" };
     }
 
     await this.#user.create({
       username: body.username, password: body.password
     });
 
-    return { message: "Пользователь добавлен! " + body.username };
+    return { message: "Пользователь " + body.username + " успешно добавлен!" };
   }
 }
 

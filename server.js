@@ -75,6 +75,27 @@ app.post('/api/user/create', async (req, res) => {
   }
 });
 
+
+// app.get('/login', async (req, res) => {
+//   res.render('pages/login', {
+//     message: req.query.message2 || ''
+//   });
+// })
+
+
+// app.post('/login', async (req, res) => {
+//   try {
+//     const result = await db.login(req.body);
+//     res.redirect('/login?message2=' + result.message2)
+//   } catch (e) {
+//     res.send({ error: e.message2 });
+//   }
+// });
+
+// <% if (message2) { %>
+//   <h3><%=message2 %></h3>
+// <% } %>
+
 app.post('/auth/login', async (req, res) => {
 
   try {

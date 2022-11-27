@@ -2,23 +2,31 @@
 <html>
 
 <head>
-    <title>Index Page</title>
-    <script src="/assets/jquery.min.js"></script>
-    <link rel="stylesheet" href="/assets/css/main.css">
+  <title>Index Page</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
 <body>
 
-<% if (!username) { %>
-    <h3>Ты не залогинен чорт!</h3>
-    <a href= "login">Вход</a> 
-<% } else { %>
-    <h3>Привет, мой друг <%=username %></h3>
-    <a href= "createUser">Добавить пользователя</a> 
-    
-    <h1></h1><a href= "logout">Выход</a>
-<% } %>
-
+  <% if (!username) { %>
+  <h3>Ты не залогинен чорт!</h3>
+  <a href="login">Вход</a>
+  <% } else if(username!='andy') { %> <%# (TODO: проверять права доступа юзера) %>
+  <h3>Привет, мой друг <%=username %></h3>
+  <h3>Ты не админ!</h3>
+  <h4><a href="users">Список пользователей (доступно только с правами админа, но еще не сделано)</a></h4>
+  </h1><a href="logout">Выход</a>
+  <% }
+        else{ %>
+  <h3>Привет, мой друг <%=username %></h3>
+  <h3>Ты админ!</h3>
+  <h4><a href="createUser">Добавить пользователя (доступно только с правами админа)</a></h4>
+  <h4><a href="users">Список пользователей (доступно только с правами админа)</a></h4>
+  <h4><a href="employees">Список сотрудников</a></h4>
+  <h4>
+    </h1><a href="logout">Выход</a>
+    <% } %>
 
 </body>
 

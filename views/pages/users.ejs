@@ -2,18 +2,39 @@
 <html>
 
 <head>
-    <title>Login</title>
-    <script src="/assets/jquery.min.js"></script>
-    <link rel="stylesheet" href="/assets/css/main.css">
+  <title>Users</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
 <body>
 
-Список пользователей
-<%# комментарий %>
-<% for (let user of users) { %>
-    <p>#<%=user.id %> | <%=user.username %> | <%=user.password %>
+
+
+
+  <table border="1">
+    <caption>Список пользователей</caption>
+    <tr>
+      <th>Номер</th>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Пусто</th>
+      <th>Пусто</th>
+    </tr>
+
+    <% for (let user of users) { %>
+    <tr>
+      <td>#<%=user.id %></td>
+      <td><%=user.username %></td>
+      <td><%=user.password %></td>
+    </tr>
     <%} %>
+
+  </table>
+
+
+
+
 </body>
 
 </html>

@@ -9,7 +9,7 @@
 
 <body>
 
-  <table border="1">
+  <table>
     <caption>Список сотрудников</caption>
     <tr>
       <th>Номер</th>
@@ -26,7 +26,7 @@
 
     <% for (let employee of employees) { %>
     <tr>
-      <td>#<%=employee.id %></td>
+      <td><%=employee.id %></td>
       <td><%=employee.surname %></td>
       <td><%=employee.name %></td>
       <td><%=employee.middleName  %></td>
@@ -42,6 +42,5 @@
   </table>
 
 </body>
-<h1></h1><a href="index">На главное меню</a>
-
+<h1><a href="/">На главное меню</a></h1>
 </html>

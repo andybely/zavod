@@ -90,6 +90,25 @@ class Database {
     return this.#employee.findAll()
   }
 
+  async getAllProducts() {
+    return this.#product.findAll()
+  }
+
+  async getAllSessions() {
+    return this.#session.findAll()
+  }
+
+  async getAllAcceptances() {
+    return this.#acceptance.findAll()
+  }
+
+  async getAllIssuances() {
+    return this.#issuance.findAll()
+  }
+  async getAllSectors() {
+    return this.#sector.findAll()
+  }
+
   syncronize() {
     this.#sequelize.sync({ alter: true });
   }
@@ -137,7 +156,8 @@ class Database {
 
   async login({ username, password }) {
     if (!username || !password) {
-      throw new Error('Укажите username и password');
+      // throw new Error('Укажите username и password');
+      return { message: "Укажите username и password"};
     }
 
     const user = await this.#user.findOne({
@@ -149,8 +169,8 @@ class Database {
 
 
     if (!user) {
-      throw new Error('Неверный логин или пароль');
-      // return { message2: "Неверный логин или пароль"};
+      // throw new Error('Неверный логин или пароль');
+      return { message: "Неверный логин или пароль"};
     }
 
     const sessionKey = crypto.randomBytes(16).toString('hex');
@@ -160,7 +180,10 @@ class Database {
       UserId: user.id,
     });
 
-    return { id: sessionKey }
+    return { 
+      id: sessionKey,
+      message: "Сессия создана"
+    }
   }
 
   async addUser(body, req) {

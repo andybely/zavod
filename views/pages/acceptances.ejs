@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>acceptances</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <table>
+    <caption>Список принятых строительных изделий</caption>
+    <tr>
+      <th>Номер</th>
+      <th>Дата принятия изделия</th>
+      <th>Количество принятого изделия</th>
+      <th>Цена</th>
+      <th>Примающий (связь доделать)</th>
+      <th>Сектор (связь доделать)</th>
+    </tr>
+    <% for (let acceptance of acceptances) { %>
+    <tr>
+      <td><%=acceptance.id %></td>
+      <td><%=acceptance.acceptanceDate %></td>      
+      <td><%=acceptance.quantityAccepted %></td>   
+      <td><%=acceptance.price %></td>   
+    </tr>
+    <%} %>
+
+  </table>
+
+</body>
+<h1><a href="/">На главное меню</a></h1>
+
+</html>

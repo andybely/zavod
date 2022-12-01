@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>sessions</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <table>
+    <caption>Список сессий</caption>
+    <tr>
+      <th>Номер</th>
+      <th>sessionId</th>
+      <th>UserId</th>
+    </tr>
+
+    <% for (let session of sessions) { %>
+    <tr>
+      <td><%=session.id %></td>
+      <td><%=session.sessionId %></td>
+      <td><%=session.UserId %></td>
+    </tr>
+    <%} %>
+
+  </table>
+
+</body>
+<h1><a href="/">На главное меню</a></h1>
+
+</html>

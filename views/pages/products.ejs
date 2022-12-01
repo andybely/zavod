@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>products</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <table>
+    <caption>Строительные изделия</caption>
+    <tr>
+      <th>Номер</th>
+      <th>Наименование</th>
+      <th>Количество</th>
+      <th>Брак</th>
+      <th>Описание</th>
+      <th>Сектор хранения(доделать таблицу)</th>
+    </tr>
+
+    <% for (let product of products) { %>
+    <tr>
+      <td><%=product.id %></td>
+      <td><%=product.nomination %></td>
+      <td><%=product.quantity %></td>
+      <td><%=product.defect %></td>
+      <td><%=product.description %></td>
+    </tr>
+    <%} %>
+
+  </table>
+
+</body>
+<h1><a href="/">На главное меню</a></h1>
+
+</html>

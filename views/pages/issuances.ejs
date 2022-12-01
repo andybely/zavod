@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>issuances</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <table>
+    <caption>Список выданных строительных изделий</caption>
+    <tr>
+      <th>Номер</th>
+      <th>Дата выдачи изделия</th>
+      <th>Количество выданного изделия</th>
+      <th>Цена</th>
+      <th>Выдающий (связь доделать)</th>
+      <th>Сектор (связь доделать)</th>
+    </tr>
+    <% for (let issuance of issuances) { %>
+    <tr>
+      <td><%=issuance.id %></td>
+      <td><%=issuance.issueDate %></td>      
+      <td><%=issuance.quantityIssued %></td>   
+      <td><%=issuance.price %></td>   
+    </tr>
+    <%} %>
+
+  </table>
+
+</body>
+<h1><a href="/">На главное меню</a></h1>
+
+</html>

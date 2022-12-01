@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>sectors</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <table>
+    <caption>Список секторов</caption>
+    <tr>
+      <th>Номер</th>
+      <th>Название сектора</th>
+    </tr>
+    <% for (let sector of sectors) { %>
+    <tr>
+      <td><%=sector.id %></td>
+      <td><%=sector.sectorName %></td>
+    </tr>
+    <%} %>
+
+  </table>
+
+</body>
+<h1><a href="/">На главное меню</a></h1>
+
+</html>

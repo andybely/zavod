@@ -2,14 +2,16 @@
 <html>
 
 <head>
-    <title>Login</title>
+    <title>login</title>
     <script src="/assets/jquery.min.js"></script>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 
 <body>
+    <% if (message) { %>
+        <h3><%=message %></h3>
+    <% } %>
 
-    
     <form method='POST' action="/auth/login">
         <h2>Вход в систему</h2>
         <input type="text" name="username" placeholder="Логин" required autofocus="" autocomplete="off" />

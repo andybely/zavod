@@ -48,9 +48,9 @@ app.get('/', async (req, res) => {
 })
 
 /** :( */
-app.get('/login', async (req, res) => {
-  res.render('pages/login');
-})
+// app.get('/login', async (req, res) => {
+//   res.render('pages/login');
+// })
 
 app.get('/logout', async (req, res) => {
   res.cookie('session', '');
@@ -76,54 +76,98 @@ app.post('/api/user/create', async (req, res) => {
 });
 
 
-// app.get('/login', async (req, res) => {
-//   res.render('pages/login', {
-//     message: req.query.message2 || ''
-//   });
-// })
+app.get('/login', async (req, res) => {
+  res.render('pages/login', {
+    message: req.query.message || ''
+  });
+})
 
-
-// app.post('/login', async (req, res) => {
-//   try {
-//     const result = await db.login(req.body);
-//     res.redirect('/login?message2=' + result.message2)
-//   } catch (e) {
-//     res.send({ error: e.message2 });
-//   }
-// });
-
-// <% if (message2) { %>
-//   <h3><%=message2 %></h3>
-// <% } %>
 
 app.post('/auth/login', async (req, res) => {
 
   try {
-    const session = await db.login(req.body);
+    const session = await db.login(req.body, req);
     res.cookie('session', session.id);
-    res.redirect('/')
+    if (session.message == "Сессия создана") {
+      res.redirect('/?message=' + session.message)
+    }
+    else {
+      res.redirect('/login?message=' + session.message)
+    }
+
   } catch (e) {
+    res.redirect('/')
     res.send({ error: e.message });
   }
 
 });
 
 
-app.get('/users', async function(req, res) {
- const users = await db.getAllUsers()
- //res.send(users)
- res.render('pages/users', {
-  users: users,
- } );
+
+app.get('/users', async function (req, res) {
+  const users = await db.getAllUsers()
+  //res.send(users)
+  res.render('pages/users', {
+    users: users,
+  });
 });
 
-app.get('/employees', async function(req, res) {
+app.get('/employees', async function (req, res) {
   const employees = await db.getAllEmployees()
   //res.send(employees)
   res.render('pages/employees', {
     employees: employees,
-  } );
- });
+  });
+});
+
+app.get('/products', async function (req, res) {
+  const products = await db.getAllProducts()
+  res.render('pages/products', {
+    products: products,
+  });
+});
+
+app.get('/sessions', async function (req, res) {
+  const sessions = await db.getAllSessions()
+  res.render('pages/sessions', {
+    sessions: sessions,
+  });
+});
+
+app.get('/sessions', async function (req, res) {
+  const sessions = await db.getAllSessions()
+  res.render('pages/sessions', {
+    sessions: sessions,
+  });
+});
+
+app.get('/sessions', async function (req, res) {
+  const sessions = await db.getAllSessions()
+  res.render('pages/sessions', {
+    sessions: sessions,
+  });
+});
+
+app.get('/acceptances', async function (req, res) {
+  const acceptances = await db.getAllAcceptances()
+  res.render('pages/acceptances', {
+    acceptances: acceptances,
+  });
+});
+
+app.get('/issuances', async function (req, res) {
+  const issuances = await db.getAllIssuances()
+  res.render('pages/issuances', {
+    issuances: issuances,
+  });
+});
+
+app.get('/sectors', async function (req, res) {
+  const sectors = await db.getAllSectors()
+  res.render('pages/sectors', {
+    sectors: sectors,
+  });
+});
 
 
 /** Запускаем сервер */

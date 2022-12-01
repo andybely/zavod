@@ -9,10 +9,7 @@
 
 <body>
 
-
-
-
-  <table border="1">
+  <table>
     <caption>Список пользователей</caption>
     <tr>
       <th>Номер</th>
@@ -24,7 +21,7 @@
 
     <% for (let user of users) { %>
     <tr>
-      <td>#<%=user.id %></td>
+      <td><%=user.id %></td>
       <td><%=user.username %></td>
       <td><%=user.password %></td>
     </tr>
@@ -32,9 +29,7 @@
 
   </table>
 
-
-
-
 </body>
+<h1><a href="/">На главное меню</a></h1>
 
 </html>

@@ -9,6 +9,11 @@
 
 <body>
 
+  <% if (!username) { %>
+  <h3>Ты не залогинен чорт!</h3>
+  <h1><a href="login">Вход</a></h1>
+  <% } else{ %>
+  <h4>Вход выполнен через учетную запись: <%=username %></h4>
   <table>
     <caption>Список принятых строительных изделий</caption>
     <tr>
@@ -16,21 +21,30 @@
       <th>Дата принятия изделия</th>
       <th>Количество принятого изделия</th>
       <th>Цена</th>
-      <th>Примающий (связь доделать)</th>
-      <th>Сектор (связь доделать)</th>
+      <th>Id продукта</th>
+      <th>Id сектора</th>
+      <th>Принимающий</th>
     </tr>
     <% for (let acceptance of acceptances) { %>
     <tr>
       <td><%=acceptance.id %></td>
-      <td><%=acceptance.acceptanceDate %></td>      
-      <td><%=acceptance.quantityAccepted %></td>   
-      <td><%=acceptance.price %></td>   
+      <td><%=acceptance.acceptanceDate %></td>
+      <td><%=acceptance.quantityAccepted %></td>
+      <td><%=acceptance.price %></td>
+      <td><%=acceptance.ProductId %></td>
+      <td><%=acceptance.SectorId %></td>
+      <td><%=acceptance.EmployeeId %></td>
     </tr>
     <%} %>
 
   </table>
+  <h1><a href="/">На главное меню</a></h1>
 
+
+  <% } %>
 </body>
-<h1><a href="/">На главное меню</a></h1>
+
+
+
 
 </html>

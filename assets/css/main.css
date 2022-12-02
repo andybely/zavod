@@ -64,6 +64,8 @@ table {
     color: #000;
     border: 16px solid #20303e;
     border-top-width: 1px;
+    margin-top: 15px;
+
 }
 
 th {

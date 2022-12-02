@@ -78,7 +78,14 @@ class Database {
     // this.#employee.Role = this.#employee.belongsTo(this.#role); // перевыдал на юзера
     this.#user.Role = this.#user.belongsTo(this.#role);
     this.#session.User = this.#session.belongsTo(this.#user);
-
+    this.#acceptance.Product = this.#acceptance.belongsTo(this.#product);
+    this.#acceptance.Sector = this.#acceptance.belongsTo(this.#sector);   
+    this.#acceptance.Employee = this.#acceptance.belongsTo(this.#employee); 
+    this.#issuance.Product = this.#issuance.belongsTo(this.#product);
+    this.#issuance.Sector = this.#issuance.belongsTo(this.#sector);
+    this.#issuance.Employee = this.#issuance.belongsTo(this.#employee);  
+    this.#product.Sector = this.#product.belongsTo(this.#sector);
+    this.#sector.Employee = this.#sector.belongsTo(this.#employee);
     //дописать
   }
 
@@ -211,7 +218,6 @@ class Database {
     });
 
     if (user) {
-      // throw new Error('Такой пользователь уже существует'); не надо 
       return { message: "Пользователь " + body.username + " уже существует!" };
     }
 
@@ -221,6 +227,33 @@ class Database {
 
     return { message: "Пользователь " + body.username + " успешно добавлен!" };
   }
+
+  async  acceptProduct(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    await this.#acceptance.create({
+      acceptanceDate: body.acceptanceDate, quantityAccepted: body.quantityAccepted, price: body.price, ProductId: body.ProductId, SectorId: body.SectorId, EmployeeId: body.EmployeeId
+    });
+
+    return { message: "Изделие " + body.price + " принят!" };
+  }
+
+  async  issueProduct(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    await this.#issuance.create({
+      issueDate: body.issueDate, quantityIssued: body.quantityIssued, price: body.price, ProductId: body.ProductId, SectorId: body.SectorId, EmployeeId: body.EmployeeId
+    });
+
+    return { message: "Изделие " + body.price + " выдан!" };
+  }
+
 }
 
 module.exports = Database;

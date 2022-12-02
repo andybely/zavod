@@ -9,6 +9,11 @@
 
 <body>
 
+  <% if (!username) { %>
+  <h3>Ты не залогинен чорт!</h3>
+  <h1><a href="login">Вход</a></h1>
+  <% } else{ %>
+  <h4>Вход выполнен через учетную запись: <%=username %></h4>
   <table>
     <caption>Список выданных строительных изделий</caption>
     <tr>
@@ -22,15 +27,17 @@
     <% for (let issuance of issuances) { %>
     <tr>
       <td><%=issuance.id %></td>
-      <td><%=issuance.issueDate %></td>      
-      <td><%=issuance.quantityIssued %></td>   
-      <td><%=issuance.price %></td>   
+      <td><%=issuance.issueDate %></td>
+      <td><%=issuance.quantityIssued %></td>
+      <td><%=issuance.price %></td>
     </tr>
     <%} %>
 
   </table>
+  <h1><a href="/">На главное меню</a></h1>
 
+  <% } %>
 </body>
-<h1><a href="/">На главное меню</a></h1>
+
 
 </html>

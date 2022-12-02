@@ -9,14 +9,18 @@
 
 <body>
 
+  <% if (!username) { %>
+  <h3>Ты не залогинен чорт!</h3>
+  <h1><a href="login">Вход</a></h1>
+  <% } else{ %>
+  <h4>Вход выполнен через учетную запись: <%=username %></h4>
   <table>
     <caption>Список пользователей</caption>
     <tr>
       <th>Номер</th>
       <th>Фамилия</th>
       <th>Имя</th>
-      <th>Пусто</th>
-      <th>Пусто</th>
+      <th>Id роли</th>
     </tr>
 
     <% for (let user of users) { %>
@@ -24,12 +28,14 @@
       <td><%=user.id %></td>
       <td><%=user.username %></td>
       <td><%=user.password %></td>
+      <td><%=user.RoleId %></td>
     </tr>
     <%} %>
 
   </table>
+  <h1><a href="/">На главное меню</a></h1>
 
+  <% } %>
 </body>
-<h1><a href="/">На главное меню</a></h1>
 
 </html>

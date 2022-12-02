@@ -9,6 +9,11 @@
 
 <body>
 
+  <% if (!username) { %>
+  <h3>Ты не залогинен чорт!</h3>
+  <h1><a href="login">Вход</a></h1>
+  <% } else{ %>
+  <h4>Вход выполнен через учетную запись: <%=username %></h4>
   <table>
     <caption>Строительные изделия</caption>
     <tr>
@@ -17,7 +22,7 @@
       <th>Количество</th>
       <th>Брак</th>
       <th>Описание</th>
-      <th>Сектор хранения(доделать таблицу)</th>
+      <th>Id Сектора</th>
     </tr>
 
     <% for (let product of products) { %>
@@ -27,12 +32,14 @@
       <td><%=product.quantity %></td>
       <td><%=product.defect %></td>
       <td><%=product.description %></td>
+      <td><%=product.SectorId %></td>
     </tr>
     <%} %>
 
   </table>
+  <h1><a href="/">На главное меню</a></h1>
 
+  <% } %>
 </body>
-<h1><a href="/">На главное меню</a></h1>
 
 </html>

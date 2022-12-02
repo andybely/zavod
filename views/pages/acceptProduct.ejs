@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>acceptProduct</title>
+  <script src="/assets/jqery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+  <% if (!username) { %>
+  <h3>Ты не залогинен чорт!</h3>
+  <h1><a href="login">Вход</a></h1>
+  <% } else{ %>
+  <h4>Вход выполнен через учетную запись: <%=username %></h4>  
+  <% if (message) { %>
+  <h4><%=message %></h4>
+  <% } %>
+  <form method="POST" action="product/accept">
+    <h4>Принять строительное изделие</h4>
+    <input type="date" name="acceptanceDate" placeholder="Дата принятия изделия" required autofocus="" autocomplete="off" />
+    <input type="number" name="quantityAccepted" placeholder="Количество принятого изделия" required autofocus="" autocomplete="off" />
+    <input type="number" name="price" placeholder="Цена" required autofocus="" autocomplete="off" />
+    <input type="number" name="ProductId" placeholder="Id изделия" required autofocus="" autocomplete="off" />
+    <input type="number" name="SectorId" placeholder="Id сектора" required autofocus="" autocomplete="off" />
+    <input type="number" name="EmployeeId" placeholder="Id принимающего" required autofocus="" autocomplete="off" />
+    <button type="submit">Принять изделие</button>
+  </form>
+
+  <table>
+    <tr>
+      <th>Id изделия</th>
+      <th>Наименование</th>
+      <th>Id Сектора</th>
+    </tr>
+
+    <% for (let product of products) { %>
+    <tr>
+      <td><%=product.id %></td>
+      <td><%=product.nomination %></td>
+      <td><%=product.SectorId %></td>
+    </tr>
+    <%} %>
+
+  </table>
+
+  <table>
+    <tr>
+      <th>Id принимающего</th>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Отчество</th>
+    </tr>
+
+    <% for (let employee of employees) { %>
+    <tr>
+      <td><%=employee.id %></td>
+      <td><%=employee.surname %></td>
+      <td><%=employee.name %></td>
+      <td><%=employee.middleName  %></td>
+    </tr>
+    <%} %>
+
+  </table>
+  <h1><a href="/">На главное меню</a></h1>
+
+  <% } %>
+
+</body>
+
+
+</html>

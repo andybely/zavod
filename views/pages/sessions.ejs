@@ -13,11 +13,15 @@
   <h3>Ты не залогинен чорт!</h3>
   <h1><a href="login">Вход</a></h1>
   <% } else{ %>
-  <h4>Вход выполнен через учетную запись: <%=username %></h4>
+  <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
+  <form method="POST" action="">
+    <input name="s" placeholder="Поиск по номеру сессии" type="search">
+    <button type="submit">Поиск</button>
+  </form>
   <table>
     <caption>Список сессий</caption>
     <tr>
-      <th>Номер</th>
+      <th>Номер сесии</th>
       <th>sessionId</th>
       <th>UserId</th>
     </tr>

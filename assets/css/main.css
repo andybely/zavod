@@ -86,3 +86,7 @@ caption {
     background: #20303e;
     color: #f0f0f0;
 }
+
+#user{
+    font-style: italic;
+}

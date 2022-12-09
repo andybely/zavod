@@ -39,10 +39,36 @@ app.use(async (req, res, next) => {
 
   return next();
 });
+const Roles = {
+  '/acceptProduct': ['*', 'accept'],
+  '/api/user/create': ['*'],
+  '/createUser': ['*'], 
+  '/issueProduct': ['*', 'issue'],
+  '/users': ['*', 'read'],
+  '/employees': ['*'], 
+  '/sessions': ['*'], 
+  '/products': ['*', 'read'], 
+  '/acceptances': ['*', 'accept'],  
+  '/issuances': ['*', 'issue'],  
+  '/sectors': ['*', 'read'],  
+}
+
+app.use(async (req, res, next) => {
+  const role = req.user?.role.roleAccess || ''
+  if (Roles[req.originalUrl]) {
+    const userRoles = role.split(',');
+    for (const needRole of Roles[req.originalUrl]) {
+      if (userRoles.find((userRole) => userRole === needRole)) return next();
+    }
+    return res.redirect('/?message=Access Denied');
+  }
+  return next();
+})
 
 /** Прописываем роуты. Т.е. при переходе на страницу, какую показывать пользователю */
 app.get('/', async (req, res) => {
   res.render('pages/index', {
+    message: req.query.message || '',
     username: req.user?.username,
   });
 })
@@ -138,16 +164,26 @@ app.post('/auth/login', async (req, res) => {
 
 
 app.get('/users', async function (req, res) {
-  const users = await db.getAllUsers()
+  const usersId = req.query?.usersId;
+  const users = usersId ? await db.getUsersById(usersId) : await db.getAllUsers()
   res.render('pages/users', {
     users: users,
     username: req.user?.username,
   });
 });
 
+app.get('/sectors', async function (req, res) {
+  const sectorId = req.query?.sectorId;
+  const sectors = sectorId ? await db.getSectorById(sectorId) : await db.getAllSectors()
+  res.render('pages/sectors', {
+    sectors: sectors,
+    username: req.user?.username,
+  });
+});
+
 app.get('/employees', async function (req, res) {
-  const employees = await db.getAllEmployees()
-  //res.send(employees)
+  const surnames = req.query?.surnames;
+  const employees = surnames ? await db.getEmployeeBySurname(surnames) : await db.getAllEmployees()
   res.render('pages/employees', {
     employees: employees,
     username: req.user?.username,
@@ -187,7 +223,8 @@ app.get('/issuances', async function (req, res) {
 });
 
 app.get('/sectors', async function (req, res) {
-  const sectors = await db.getAllSectors()
+  const sectorId = req.query?.sectorId;
+  const sectors = sectorId ? await db.getSectorById(sectorId) : await db.getAllSectors()
   res.render('pages/sectors', {
     sectors: sectors,
     username: req.user?.username,

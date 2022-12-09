@@ -9,11 +9,11 @@
 
 <body>
 
-  <% if (!username) { %>
-  <h3>Ты не залогинен чорт!</h3>
-  <h1><a href="login">Вход</a></h1>
-  <% } else{ %>
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
+  <form method="POST" action="">
+    <input name="s" placeholder="Поиск по ID выдающего" type="search">
+    <button type="submit">Поиск</button>
+  </form>
   <table>
     <caption>Список выданных строительных изделий</caption>
     <tr>
@@ -21,8 +21,9 @@
       <th>Дата выдачи изделия</th>
       <th>Количество выданного изделия</th>
       <th>Цена</th>
-      <th>Выдающий (связь доделать)</th>
-      <th>Сектор (связь доделать)</th>
+      <th>Id продукта</th>
+      <th>Id сектора</th>
+      <th>Id выдающего</th>
     </tr>
     <% for (let issuance of issuances) { %>
     <tr>
@@ -30,6 +31,9 @@
       <td><%=issuance.issueDate %></td>
       <td><%=issuance.quantityIssued %></td>
       <td><%=issuance.price %></td>
+      <td><%=issuance.ProductId %></td>
+      <td><%=issuance.SectorId %></td>
+      <td><%=issuance.EmployeeId %></td>
     </tr>
     <%} %>
 

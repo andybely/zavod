@@ -7,7 +7,7 @@ module.exports = {
     primaryKey: true
   },
   nomination: {
-    type: DataTypes.STRING(25),
+    type: DataTypes.STRING(50),
     field: 'NOMINATION',
     allowNull: false
   },
@@ -22,7 +22,7 @@ module.exports = {
     allowNull: true
   },
   description: {
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(255),
     field: 'DESCRIPTION',
     allowNull: true
   },

@@ -8,10 +8,7 @@
 </head>
 
 <body>
-  <% if (!username) { %>
-  <h3>Ты не залогинен чорт!</h3>
-  <h1><a href="login">Вход</a></h1>
-  <% } else{ %>
+
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
   <% if (message) { %>
   <h4><%=message %></h4>
@@ -64,9 +61,6 @@
   </table>
   <h1><a href="/">На главное меню</a></h1>
 
-  <% } %>
-
 </body>
-
 
 </html>

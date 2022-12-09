@@ -9,12 +9,11 @@
 
 <body>
 
-
-  <% if (!username) { %>
-  <h3>Ты не залогинен чорт!</h3>
-  <h1><a href="login">Вход</a></h1>
-  <% } else{ %>
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
+  <form method="GET" action="/employees">
+    <input name="surnames" placeholder="Поиск по фамилии" type="search">
+    <button type="submit">Поиск</button>
+  </form>
   <table>
     <caption>Список сотрудников</caption>
     <tr>
@@ -27,7 +26,6 @@
       <th>Номер телефона</th>
       <th>Должность</th>
       <th>UserId</th>
-      <th>RoleId</th>
     </tr>
 
     <% for (let employee of employees) { %>
@@ -41,14 +39,11 @@
       <td><%=employee.phone %></td>
       <td><%=employee.jobTitle %> </td>
       <td><%=employee.UserId %> </td>
-      <td><%=employee.RoleId %> </td>
     </tr>
     <%} %>
 
   </table>
   <h1><a href="/">На главное меню</a></h1>
-
-  <% } %>
 
 </body>
 

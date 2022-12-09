@@ -13,7 +13,7 @@ module.exports = {
     allowNull: false
   },
   password: {
-    type: DataTypes.STRING(25),
+    type: DataTypes.STRING(64),
     field: 'PASSWORD',
     allowNull: false
   },

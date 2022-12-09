@@ -8,21 +8,18 @@
 </head>
 
 <body>
-  <% if (!username) { %>
-  <h3>Ты не залогинен чорт!</h3>
-  <h1><a href="login">Вход</a></h1>
-  <% } else{ %>
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
-  <form method="POST" action="">
-    <input name="s" placeholder="Поиск по ID" type="search">
+  <form method="GET" action="/users">
+    <input name="usersId" placeholder="Поиск по Id" type="search">
     <button type="submit">Поиск</button>
   </form>
+
   <table>
     <caption>Список пользователей</caption>
     <tr>
       <th>ID пользователя</th>
-      <th>Фамилия</th>
-      <th>Имя</th>
+      <th>Username</th>
+      <th>Password</th>
       <th>Id роли</th>
     </tr>
 
@@ -31,14 +28,13 @@
       <td><%=user.id %></td>
       <td><%=user.username %></td>
       <td><%=user.password %></td>
-      <td><%=user.RoleId %></td>
+      <td><%=user.roleId %></td>
     </tr>
     <%} %>
 
   </table>
   <h1><a href="/">На главное меню</a></h1>
 
-  <% } %>
 </body>
 
 </html>

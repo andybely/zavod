@@ -10,12 +10,16 @@
 <body>
 
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
-  <form method="POST" action="">
-    <input name="s" placeholder="Поиск по наименованию" type="search">
+  <form method="GET" action="/products">
+    <input name="productsId" placeholder="Поиск по ID изделия" type="search">
     <button type="submit">Поиск</button>
   </form>
-  <form method="POST" action="">
-    <input name="s" placeholder="Поиск по ID сектора" type="search">
+  <form method="GET" action="/findByNominations">
+    <input name="nominations" placeholder="Поиск по наименованию" type="search">
+    <button type="submit">Поиск</button>
+  </form>
+  <form method="GET" action="/findBySectorId">
+    <input name="SectorsId" placeholder="Поиск по ID сектора" type="search">
     <button type="submit">Поиск</button>
   </form>
   <table>

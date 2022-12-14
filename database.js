@@ -112,6 +112,30 @@ class Database {
     return this.employee.findAll()
   }
 
+  async getProductById(productsId) {
+    return this.product.findAll({
+      where: {
+        id: productsId,
+      }
+    })
+  }
+
+  async getProductByNomination(nominations) {
+    return this.product.findAll({
+      where: {
+        nomination: nominations,
+      }
+    })
+  }
+
+  async getProductBySector(SectorsId) {
+    return this.product.findAll({
+      where: {
+        sectorId: SectorsId,
+      }
+    })
+  }
+
   async getAllProducts() {
     return this.product.findAll()
   }
@@ -120,8 +144,40 @@ class Database {
     return this.session.findAll()
   }
 
+  async getByAcceptEmployeeId(employeeId) {
+    return this.acceptance.findAll({
+      where: {
+        employeeId: employeeId,
+      }
+    })
+  }
+
+  async getByDateAccept(dateAccept) {
+    return this.acceptance.findAll({
+      where: {
+        acceptanceDate: dateAccept,
+      }
+    })
+  }
+
   async getAllAcceptances() {
     return this.acceptance.findAll()
+  }
+
+  async getByIssueEmployeeId(employeeId) {
+    return this.issuance.findAll({
+      where: {
+        employeeId: employeeId,
+      }
+    })
+  }
+
+  async getByDateIssue(dateIssue) {
+    return this.issuance.findAll({
+      where: {
+        issueDate: dateIssue,
+      }
+    })
   }
 
   async getAllIssuances() {

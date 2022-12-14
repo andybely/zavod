@@ -44,13 +44,14 @@ const Roles = {
   '/api/user/create': ['*'],
   '/createUser': ['*'], 
   '/issueProduct': ['*', 'issue'],
-  '/users': ['*', 'read'],
-  '/employees': ['*'], 
+  '/users': ['*'],
+  '/employees': ['*', 'read'], 
   '/sessions': ['*'], 
   '/products': ['*', 'read'], 
   '/acceptances': ['*', 'accept'],  
   '/issuances': ['*', 'issue'],  
   '/sectors': ['*', 'read'],  
+  '/admin': ['*'],  
 }
 
 app.use(async (req, res, next) => {
@@ -96,6 +97,8 @@ app.post('/api/user/create', async (req, res) => {
   }
 });
 
+// QUANTITY = QUANTITY + QUANTITY_ACCEPTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 app.get('/acceptProduct', async (req, res) => {
   const products = await db.getAllProducts()
   const employees = await db.getAllEmployees() 
@@ -136,8 +139,17 @@ app.post('/product/issue', async (req, res) => {
   }
 });
 
+// QUANTITY = QUANTITY - QUANTITY_ISSUED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 app.get('/login', async (req, res) => {
   res.render('pages/login', {
+    message: req.query.message || '',
+    username: req.user?.username,
+  });
+})
+
+app.get('/admin', async (req, res) => {
+  res.render('pages/admin', {
     message: req.query.message || '',
     username: req.user?.username,
   });
@@ -191,7 +203,26 @@ app.get('/employees', async function (req, res) {
 });
 
 app.get('/products', async function (req, res) {
-  const products = await db.getAllProducts()
+  const productsId = req.query?.productsId;
+  const products = productsId ? await db.getProductById(productsId) : await db.getAllProducts()
+  res.render('pages/products', {
+    products: products,
+    username: req.user?.username,
+  });
+});
+
+app.get('/findByNominations', async function (req, res) {
+  const nominations = req.query?.nominations;
+  const products = nominations ? await db.getProductByNomination(nominations) : await db.getAllProducts()
+  res.render('pages/products', {
+    products: products,
+    username: req.user?.username,
+  });
+});
+
+app.get('/findBySectorId', async function (req, res) {
+  const SectorsId = req.query?.SectorsId;
+  const products = SectorsId ? await db.getProductBySector(SectorsId) : await db.getAllProducts()
   res.render('pages/products', {
     products: products,
     username: req.user?.username,
@@ -210,12 +241,48 @@ app.get('/acceptances', async function (req, res) {
   const acceptances = await db.getAllAcceptances()
   res.render('pages/acceptances', {
     acceptances: acceptances,
+    username: req.user?.username,
+  });
+});
+
+app.get('/findByDateAccept', async function (req, res) {
+  const dateAccept = req.query?.dateAccept;
+  const acceptances = dateAccept ? await db.getByDateAccept(dateAccept) : await db.getAllAcceptances()
+  res.render('pages/acceptances', {
+    acceptances: acceptances,
+    username: req.user?.username,
+  });
+});
+
+app.get('/findAcceptEmployeeId', async function (req, res) {
+  const employeeId = req.query?.employeeId;
+  const acceptances = employeeId ? await db.getByAcceptEmployeeId(employeeId) : await db.getAllAcceptances()
+  res.render('pages/acceptances', {
+    acceptances: acceptances,
     username: req.user?.username
+  });
+});
+
+app.get('/findIssueEmployeeId', async function (req, res) {
+  const employeeId = req.query?.employeeId;
+  const issuances = employeeId ? await db.getByIssueEmployeeId(employeeId) : await db.getAllIssuances()
+  res.render('pages/issuances', {
+    issuances: issuances,
+    username: req.user?.username,
   });
 });
 
 app.get('/issuances', async function (req, res) {
   const issuances = await db.getAllIssuances()
+  res.render('pages/issuances', {
+    issuances: issuances,
+    username: req.user?.username,
+  });
+});
+
+app.get('/findByDateIssue', async function (req, res) {
+  const dateIssue = req.query?.dateIssue;
+  const issuances = dateIssue ? await db.getByDateIssue(dateIssue) : await db.getAllIssuances()
   res.render('pages/issuances', {
     issuances: issuances,
     username: req.user?.username,

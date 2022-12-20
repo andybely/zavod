@@ -9,7 +9,7 @@ const Issuance = require('./models/Issuance');
 const Sector = require('./models/Sector');
 const Product = require('./models/Product');
 const crypto = require("crypto");
-const { surname } = require('./models/Employee');
+const { surname, id } = require('./models/Employee');
 
 
 class Database {
@@ -78,7 +78,7 @@ class Database {
     this.employee.User = this.employee.belongsTo(this.user);
     this.user.Role = this.user.belongsTo(this.role, { as: 'role' });
     this.session.User = this.session.belongsTo(this.user);
-    this.acceptance.Product = this.acceptance.belongsTo(this.product); 
+    this.acceptance.Product = this.acceptance.belongsTo(this.product);
     this.acceptance.Sector = this.acceptance.belongsTo(this.sector);
     this.acceptance.Employee = this.acceptance.belongsTo(this.employee);
     this.issuance.Product = this.issuance.belongsTo(this.product);
@@ -142,6 +142,14 @@ class Database {
 
   async getAllSessions() {
     return this.session.findAll()
+  }
+
+  async getSessionById(sessionId) {
+    return this.session.findAll({
+      where: {
+        id: sessionId,
+      }
+    })
   }
 
   async getByAcceptEmployeeId(employeeId) {
@@ -210,7 +218,9 @@ class Database {
         (await this.role.create({ roleName: 'Admin', roleAccess: '*' }));
       const password = crypto.scryptSync('andy', '123', 32).toString('hex')
       const login = 'andy'
+      const id = '1'
       await this.user.create({
+        id: id,
         username: login,
         password: password,
         roleId: role.id,
@@ -262,7 +272,6 @@ class Database {
 
   async login({ username, password }) {
     if (!username || !password) {
-      // throw new Error('Укажите username и password');
       return { message: "Укажите username и password" };
     }
 
@@ -275,7 +284,6 @@ class Database {
 
 
     if (!user) {
-      // throw new Error('Неверный логин или пароль');
       return { message: "Неверный логин или пароль" };
     }
 
@@ -295,12 +303,10 @@ class Database {
   async addUser(body, req) {
 
     if (!req.user) {
-      // throw new Error('Вы не авторизованы!');
-      return { message: "Вы не авторизованы!" };
+      return { message: "Вы не авторизованы!" }; // throw new Error('Вы не авторизованы!');
     }
 
     if (!body.username || !body.password) {
-      // throw new Error('Укажите username и password');
       return { message: "Укажите username и password" };
     }
 
@@ -321,6 +327,146 @@ class Database {
     return { message: "Пользователь " + body.username + " успешно добавлен!" };
   }
 
+  async updUser(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const update = await this.user.findOne({
+      where: {
+        id: body.updId
+      }
+    });
+
+    if (update) {
+      update.set({
+        id: body.updId,
+        username: body.updUsername, 
+        password: crypto.scryptSync(body.updPassword, '123', 32).toString('hex'),
+        roleId: body.UpdroleId,
+      });
+      await update.save()
+    }
+
+    else {
+      return { message: "Информации по пользователю с ID = " + body.updId + " не существует! Для добавления заполните поля выше." };
+    }
+
+    return { message: "Информация пользователя с ID = " + body.updId + " обновлена!" };
+  }
+
+  async deleteUser(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const user = await this.user.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (user) {
+      await this.user.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Пользователя с ID = " + body.deleteId + " не существует!" };
+    }
+    return { message: "Пользователь с ID = " + body.deleteId + " успешно удален!" };
+
+  }
+
+  async addEmployee(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const employee = await this.employee.findOne({
+      where: {
+        surname: body.surname,
+        name: body.name,
+        middleName: body.middleName,
+      }
+    });
+
+    if (employee) {
+      return { message: "Сотрудник " + body.surname + " уже существует!" };
+    }
+
+    await this.employee.create({
+      surname: body.surname, name: body.name, middleName: body.middleName, dateOfBirth: body.dateOfBirth, address: body.address, phone: body.phoneNumber, jobTitle: body.jobTitle, UserId: body.userId
+    });
+
+    return { message: "Сотрудник " + body.surname + " успешно добавлен!" };
+  }
+
+  async updEmployee(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const update = await this.employee.findOne({
+      where: {
+        id: body.updId
+      }
+    });
+
+    if (update) {
+      update.set({
+        id: body.updId,
+        surname: body.updSurname,
+        name: body.updName,
+        middleName: body.updMiddleName,
+        dateOfBirth: body.updDateOfBirth,
+        address: body.updAddress,
+        phone: body.updPhoneNumber,
+        jobTitle: body.updJobTitle,
+        UserId: body.updUserId
+      });
+      await update.save()
+    }
+
+    else {
+      return { message: "Информации по сотруднику с ID = " + body.updId + " не существует! Для добавления заполните поля выше." };
+    }
+
+    return { message: "Информация сотрудника с ID = " + body.updId + " обновлена!" };
+  }
+
+  async deleteEmployee(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const employee = await this.employee.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (employee) {
+      await this.employee.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Сотрудника с ID = " + body.deleteId + " не существует!" };
+    }
+
+    return { message: "Сотрудник  с ID = " + body.deleteId + " успешно удален!" };
+  }
+
   async acceptProduct(body, req) {
 
     if (!req.user) {
@@ -331,6 +477,15 @@ class Database {
       acceptanceDate: body.acceptanceDate, quantityAccepted: body.quantityAccepted, price: body.price, ProductId: body.ProductId, SectorId: body.SectorId, EmployeeId: body.EmployeeId
     });
 
+    const accept = await this.product.findOne({
+      where: {
+        id: body.ProductId,
+      }
+    })
+
+    accept.quantity = parseInt(accept.quantity) + parseInt(body.quantityAccepted),
+      await accept.save()
+
     return { message: "Изделие с ID=" + body.ProductId + " принято!" };
   }
 
@@ -339,12 +494,20 @@ class Database {
     if (!req.user) {
       return { message: "Вы не авторизованы!" };
     }
-
     await this.issuance.create({
       issueDate: body.issueDate, quantityIssued: body.quantityIssued, price: body.price, ProductId: body.ProductId, SectorId: body.SectorId, EmployeeId: body.EmployeeId
     });
 
-    return { message: "Изделие " + body.price + " выдан!" };
+    const issue = await this.product.findOne({
+      where: {
+        id: body.ProductId,
+      }
+    })
+
+    issue.quantity = parseInt(issue.quantity) - parseInt(body.quantityIssued),
+      await issue.save()
+
+    return { message: "Изделие " + body.price + " выдано!" };
   }
 
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>createEmployee</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
+  <% if (message) { %>
+  <h4><%=message %></h4>
+  <% } %>
+  <form method='POST' action="api/employee/create">
+    <h4>Добавление нового сотрудника</h4>
+    <input type="text" name="surname" placeholder="Фамилия" required autofocus="" autocomplete="off" />
+    <input type="text" name="name" placeholder="Имя" required autofocus="" autocomplete="off" />
+    <input type="text" name="middleName" placeholder="Отчество" required autofocus="" autocomplete="off" />
+    <input type="date" name="dateOfBirth" placeholder="Дата рождения" required autofocus="" autocomplete="off" />
+    <input type="text" name="address" placeholder="Адрес" required autofocus="" autocomplete="off" />
+    <input type="number" name="phoneNumber" placeholder="Номер телефона" required autocomplete="off" />
+    <input type="text" name="jobTitle" placeholder="Должность" required autofocus="" autocomplete="off" />
+    <input type="number" name="userId" placeholder="Id пользователя" required autocomplete="off" />
+    <button type='submit'>Добавить сотрудника</button>
+  </form>
+  <form method='POST' action="api/employee/update">
+    <h4>Редактирование информации сотрудника</h4>
+    <input type="number" name="updId" placeholder="Id сотрудника" required autocomplete="off" />
+    <input type="text" name="updSurname" placeholder="Фамилия" required autofocus="" autocomplete="off" />
+    <input type="text" name="updName" placeholder="Имя" required autofocus="" autocomplete="off" />
+    <input type="text" name="updMiddleName" placeholder="Отчество" required autofocus="" autocomplete="off" />
+    <input type="date" name="updDateOfBirth" placeholder="Дата рождения" required autofocus="" autocomplete="off" />
+    <input type="text" name="updAddress" placeholder="Адрес" required autofocus="" autocomplete="off" />
+    <input type="number" name="updPhoneNumber" placeholder="Номер телефона" required autocomplete="off" />
+    <input type="text" name="updJobTitle" placeholder="Должность" required autofocus="" autocomplete="off" />
+    <input type="number" name="updUserId" placeholder="Id пользователя" required autocomplete="off" />
+    <button type='submit'>Обновить информацию сотрудника</button>
+  </form>
+
+  <table>
+    <caption>Список сотрудников</caption>
+    <tr>
+      <th>ID сотрудника</th>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Отчество</th>
+      <th>Дата рождения</th>
+      <th>Адрес прописки</th>
+      <th>Номер телефона</th>
+      <th>Должность</th>
+      <th>UserId</th>
+    </tr>
+
+    <% for (let employee of employees) { %>
+    <tr>
+      <td><%=employee.id %></td>
+      <td><%=employee.surname %></td>
+      <td><%=employee.name %></td>
+      <td><%=employee.middleName  %></td>
+      <td><%=employee.dateOfBirth %></td>
+      <td><%=employee.address %></td>
+      <td><%=employee.phone %></td>
+      <td><%=employee.jobTitle %> </td>
+      <td><%=employee.UserId %> </td>
+    </tr>
+    <%} %>
+
+  </table>
+
+  <h1><a href="admin">Назад</a></h1>
+  <h1><a href="/">На главное меню</a></h1>
+</body>
+
+</html>

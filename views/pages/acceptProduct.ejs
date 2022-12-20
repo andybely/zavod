@@ -16,7 +16,7 @@
   <form method="POST" action="product/accept">
     <h4>Принять строительное изделие</h4>
     <input type="date" name="acceptanceDate" placeholder="Дата принятия изделия" required autofocus="" autocomplete="off" />
-    <input type="number" name="quantityAccepted" placeholder="Количество принятого изделия" required autofocus="" autocomplete="off" />
+    <input type="number" name="quantityAccepted" placeholder="Кол-во принятого издел." required autofocus="" autocomplete="off" />
     <input type="number" name="price" placeholder="Цена" required autofocus="" autocomplete="off" />
     <input type="number" name="ProductId" placeholder="Id изделия" required autofocus="" autocomplete="off" />
     <input type="number" name="SectorId" placeholder="Id сектора" required autofocus="" autocomplete="off" />
@@ -28,6 +28,7 @@
     <tr>
       <th>Id изделия</th>
       <th>Наименование</th>
+      <th>Количество</th>
       <th>Id Сектора</th>
     </tr>
 
@@ -35,6 +36,7 @@
     <tr>
       <td><%=product.id %></td>
       <td><%=product.nomination %></td>
+      <td><%=product.quantity %></td>     
       <td><%=product.SectorId %></td>
     </tr>
     <%} %>

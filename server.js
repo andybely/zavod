@@ -39,19 +39,27 @@ app.use(async (req, res, next) => {
 
   return next();
 });
+
 const Roles = {
   '/acceptProduct': ['*', 'accept'],
-  '/api/user/create': ['*'],
-  '/createUser': ['*'], 
+  '/createUser': ['*'],
   '/issueProduct': ['*', 'issue'],
   '/users': ['*'],
-  '/employees': ['*', 'read'], 
-  '/sessions': ['*'], 
-  '/products': ['*', 'read'], 
-  '/acceptances': ['*', 'accept'],  
-  '/issuances': ['*', 'issue'],  
-  '/sectors': ['*', 'read'],  
-  '/admin': ['*'],  
+  '/employees': ['*', 'read'],
+  '/sessions': ['*'],
+  '/products': ['*', 'read'],
+  '/acceptances': ['*', 'accept'],
+  '/issuances': ['*', 'issue'],
+  '/sectors': ['*', 'read'],
+  '/admin': ['*'],
+  '/createEmployee': ['*'],
+  '/deleteEmployee': ['*'],
+  '/api/employee/delete': ['*'],
+  '/api/employee/update': ['*'],
+  '/api/employee/create': ['*'],
+  '/api/user/create': ['*'],
+  '/api/user/update': ['*'],
+  '/api/user/delete': ['*'],
 }
 
 app.use(async (req, res, next) => {
@@ -81,12 +89,13 @@ app.get('/logout', async (req, res) => {
 })
 
 app.get('/createUser', async (req, res) => {
+  const users = await db.getAllUsers()
   res.render('pages/createUser', {
     message: req.query.message || '',
     username: req.user?.username,
+    users: users,
   });
 })
-
 
 app.post('/api/user/create', async (req, res) => {
   try {
@@ -97,11 +106,81 @@ app.post('/api/user/create', async (req, res) => {
   }
 });
 
-// QUANTITY = QUANTITY + QUANTITY_ACCEPTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+app.post('/api/user/update', async (req, res) => {
+  try {
+    const result = await db.updUser(req.body, req);
+    res.redirect('/createUser?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/deleteUser', async (req, res) => {
+  const users = await db.getAllUsers()
+  res.render('pages/deleteUser', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    users: users,
+  });
+})
+
+app.post('/api/user/delete', async (req, res) => {
+  try {
+    const result = await db.deleteUser(req.body, req);
+    res.redirect('/deleteUser?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/createEmployee', async (req, res) => {
+  const employees = await db.getAllEmployees()
+  res.render('pages/createEmployee', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    employees: employees,
+  });
+})
+
+app.post('/api/employee/create', async (req, res) => {
+  try {
+    const result = await db.addEmployee(req.body, req);
+    res.redirect('/createEmployee?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.post('/api/employee/update', async (req, res) => {
+  try {
+    const result = await db.updEmployee(req.body, req);
+    res.redirect('/createEmployee?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/deleteEmployee', async (req, res) => {
+  const employees = await db.getAllEmployees()
+  res.render('pages/deleteEmployee', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    employees: employees,
+  });
+})
+
+app.post('/api/employee/delete', async (req, res) => {
+  try {
+    const result = await db.deleteEmployee(req.body, req);
+    res.redirect('/deleteEmployee?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
 
 app.get('/acceptProduct', async (req, res) => {
   const products = await db.getAllProducts()
-  const employees = await db.getAllEmployees() 
+  const employees = await db.getAllEmployees()
   res.render('pages/acceptProduct', {
     message: req.query.message || '',
     products: products,
@@ -121,7 +200,7 @@ app.post('/product/accept', async (req, res) => {
 
 app.get('/issueProduct', async (req, res) => {
   const products = await db.getAllProducts()
-  const employees = await db.getAllEmployees() 
+  const employees = await db.getAllEmployees()
   res.render('pages/issueProduct', {
     message: req.query.message || '',
     products: products,
@@ -138,8 +217,6 @@ app.post('/product/issue', async (req, res) => {
     res.send({ error: e.message });
   }
 });
-
-// QUANTITY = QUANTITY - QUANTITY_ISSUED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 app.get('/login', async (req, res) => {
   res.render('pages/login', {
@@ -173,7 +250,6 @@ app.post('/auth/login', async (req, res) => {
   }
 
 });
-
 
 app.get('/users', async function (req, res) {
   const usersId = req.query?.usersId;
@@ -230,7 +306,8 @@ app.get('/findBySectorId', async function (req, res) {
 });
 
 app.get('/sessions', async function (req, res) {
-  const sessions = await db.getAllSessions()
+  const sessionId = req.query?.sessionId;
+  const sessions = sessionId ? await db.getSessionById(sessionId) : await db.getAllSessions()
   res.render('pages/sessions', {
     sessions: sessions,
     username: req.user?.username,

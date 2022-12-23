@@ -140,8 +140,118 @@ class Database {
     return this.product.findAll()
   }
 
+  async createProducts(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const nomination = await this.product.findOne({
+      where: {
+        nomination: body.nomination,
+      }
+    });
+
+    if (nomination) {
+      return { message: "Ноименование " + body.nomination + " уже существует!" };
+    }
+
+    await this.product.create({
+      nomination: body.nomination, 
+      quantity: body.quantity,
+      defect: body.defect,
+      description: body.description,
+      SectorId: body.sectorId,
+    });
+
+    return { message: "Строительное изделие " + body.nomination + " успешно добавлено!" };
+  }
+
+  async updateProducts(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const update = await this.product.findOne({
+      where: {
+        id: body.updId
+      }
+    });
+
+    if (update) {
+      update.set({
+        id: body.updId,
+        nomination: body.updNomination, 
+        quantity: body.updQuantity,
+        defect: body.updDefect,
+        description: body.updDescription,
+        SectorId: body.updSectorId,
+      });
+      await update.save()
+    }
+
+    else {
+      return { message: "Информации по строильному изделию с ID = " + body.updId + " не существует!" };
+    }
+
+    return { message: "Информация строительного изделия с ID = " + body.updId + " обновлена!" };
+  }
+
+  async deleteProducts(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const product = await this.product.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (product) {
+      await this.product.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Строительное изделие с ID = " + body.deleteId + " не существует!" };
+    }
+
+    return { message: "Строительное изделие  с ID = " + body.deleteId + " успешно удалено!" };
+  }
+
   async getAllSessions() {
     return this.session.findAll()
+  }
+
+  async deleteSessions(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const session = await this.session.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (session) {
+      await this.session.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Сессии с ID = " + body.deleteId + " не существует!" };
+    }
+
+    return { message: "Сессия  с ID = " + body.deleteId + " успешно удалена!" };
   }
 
   async getSessionById(sessionId) {
@@ -172,6 +282,65 @@ class Database {
     return this.acceptance.findAll()
   }
 
+  async updateAcceptances(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const update = await this.acceptance.findOne({
+      where: {
+        id: body.updId
+      }
+    });
+
+    if (update) {
+      update.set({
+        id: body.updId,
+        issueDate: body.updIssueDate, 
+        quantityIssued: body.updQuantityIssued, 
+        price: body.updPrice, 
+        ProductId: body.updProductId, 
+        SectorId: body.updSectorId, 
+        EmployeeId: body.updEmployeeId
+
+      });
+      await update.save()
+    }
+
+    else {
+      return { message: "Информации по принятому строительному изделию с ID = " + body.updId + " не существует!" };
+    }
+
+    return { message: "Информация принятого строительного изделия с ID = " + body.updId + " успешно обновлена!" };
+  }
+
+  async deleteAcceptances(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const acceptances = await this.acceptance.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (acceptances) {
+      await this.acceptance.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Принятого строительного изделия с ID = " + body.deleteId + " не существует!" };
+    }
+
+    return { message: "Принятое строительное изделие  с ID = " + body.deleteId + " успешно удалено!" };
+  }
+
   async getByIssueEmployeeId(employeeId) {
     return this.issuance.findAll({
       where: {
@@ -192,6 +361,64 @@ class Database {
     return this.issuance.findAll()
   }
 
+  async updateIssuances(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const update = await this.issuance.findOne({
+      where: {
+        id: body.updId
+      }
+    });
+
+    if (update) {
+      update.set({
+        id: body.updId,
+        acceptanceDate: body.updAcceptanceDate, 
+        quantityAccepted: body.updQuantityAccepted, 
+        price: body.updPrice, 
+        ProductId: body.updProductId, 
+        SectorId: body.updSectorId, 
+        EmployeeId: body.updEmployeeId,
+      });
+      await update.save()
+    }
+
+    else {
+      return { message: "Информации по выданному строительному изделию с ID = " + body.updId + " не существует!" };
+    }
+
+    return { message: "Информация выданного строительного изделия с ID = " + body.updId + " успешно обновлена!" };
+  }
+
+  async deleteIssuances(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const issuances = await this.issuance.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (issuances) {
+      await this.issuance.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Выданного строительного изделия с ID = " + body.deleteId + " не существует!" };
+    }
+
+    return { message: "Выданное строительное изделие  с ID = " + body.deleteId + " успешно удалено!" };
+  }
+
   async getSectorById(sectorId) {
     return this.sector.findAll({
       where: {
@@ -202,6 +429,84 @@ class Database {
 
   async getAllSectors() {
     return this.sector.findAll()
+  }
+
+  async createSectors(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const sectorName = await this.sector.findOne({
+      where: {
+        sectorName: body.sectorName,
+      }
+    });
+
+    if (sectorName) {
+      return { message: "Сектор " + body.sectorName + " уже существует!" };
+    }
+
+    await this.sector.create({
+      sectorName: body.sectorName, 
+      EmployeeId: body.EmployeeId,
+    });
+
+    return { message: "Сектор " + body.nomination + " успешно добавлен!" };
+  }
+
+  async updateSectors(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const update = await this.sector.findOne({
+      where: {
+        id: body.updId
+      }
+    });
+
+    if (update) {
+      update.set({
+        id: body.updId,
+        sectorName: body.updSectorName, 
+        EmployeeId: body.updEmployeeId,
+      });
+      await update.save()
+    }
+
+    else {
+      return { message: "Информации по сектору с ID = " + body.updId + " не существует!" };
+    }
+
+    return { message: "Информация сектора с ID = " + body.updId + " успешно обновлена!" };
+  }
+
+  async deleteSectors(body, req) {
+
+    if (!req.user) {
+      return { message: "Вы не авторизованы!" };
+    }
+
+    const sector = await this.sector.findOne({
+      where: {
+        id: body.deleteId
+      }
+    });
+
+    if (sector) {
+      await this.sector.destroy({
+        where: {
+          id: body.deleteId
+        }
+      });
+    }
+    else {
+      return { message: "Сессии с ID = " + body.deleteId + " не существует!" };
+    }
+
+    return { message: "Сессия  с ID = " + body.deleteId + " успешно удален!" };
   }
 
 
@@ -353,7 +658,7 @@ class Database {
       return { message: "Информации по пользователю с ID = " + body.updId + " не существует! Для добавления заполните поля выше." };
     }
 
-    return { message: "Информация пользователя с ID = " + body.updId + " обновлена!" };
+    return { message: "Информация пользователя с ID = " + body.updId + " успешно обновлена!" };
   }
 
   async deleteUser(body, req) {
@@ -407,7 +712,7 @@ class Database {
     return { message: "Сотрудник " + body.surname + " успешно добавлен!" };
   }
 
-  async updEmployee(body, req) {
+  async updateEmployee(body, req) {
 
     if (!req.user) {
       return { message: "Вы не авторизованы!" };

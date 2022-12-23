@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>sectors</title>
+  <title>deleteSectors</title>
   <script src="/assets/jquery.min.js"></script>
   <link rel="stylesheet" href="/assets/css/main.css">
 </head>
@@ -10,26 +10,31 @@
 <body>
 
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
-  <form method="GET" action="/sectors">
-    <input name="sectorId" placeholder="Поиск по ID" type="search">
-    <button type="submit">Поиск</button>
+  <% if (message) { %>
+  <h4><%=message %></h4>
+  <% } %>
+  <form method='POST' action="api/sectors/delete">
+    <h4>Удалить сектор</h4>
+    <input type="number" name="deleteId" placeholder="Id сектора" required autocomplete="off" />
+    <button type='submit'>Удалить сектор</button>
   </form>
+
   <table>
     <caption>Список секторов</caption>
     <tr>
       <th>ID сектора</th>
       <th>Название сектора</th>
-      <th>Заведующий сектором</th>
     </tr>
     <% for (let sector of sectors) { %>
     <tr>
       <td><%=sector.id %></td>
       <td><%=sector.sectorName %></td>
-      <td><%=sector.EmployeeId %></td>
     </tr>
     <%} %>
 
   </table>
+
+  <h1><a href="admin">Назад</a></h1>
   <h1><a href="/">На главное меню</a></h1>
 
 </body>

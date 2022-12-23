@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>sectors</title>
+  <title>updateSectors</title>
   <script src="/assets/jquery.min.js"></script>
   <link rel="stylesheet" href="/assets/css/main.css">
 </head>
@@ -10,10 +10,18 @@
 <body>
 
   <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
-  <form method="GET" action="/sectors">
-    <input name="sectorId" placeholder="Поиск по ID" type="search">
-    <button type="submit">Поиск</button>
+  <% if (message) { %>
+  <h4><%=message %></h4>
+  <% } %>
+
+  <form method='POST' action="api/sectors/update">
+    <h4>Редактирование информации секторов</h4>
+    <input type="number" name="updId" placeholder="ID сектора" required autocomplete="off" />
+    <input type="text" name="updSectorName" placeholder="Название сектора" required autofocus="" autocomplete="off" />
+    <input type="number" name="updEmployeeId" placeholder="Id заведующего сектором" required autofocus="" autocomplete="off" />
+    <button type='submit'>Обновить информацию</button>
   </form>
+
   <table>
     <caption>Список секторов</caption>
     <tr>
@@ -30,6 +38,8 @@
     <%} %>
 
   </table>
+  
+  <h1><a href="admin">Назад</a></h1>
   <h1><a href="/">На главное меню</a></h1>
 
 </body>

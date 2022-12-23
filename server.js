@@ -108,7 +108,7 @@ app.post('/api/user/create', async (req, res) => {
 
 app.post('/api/user/update', async (req, res) => {
   try {
-    const result = await db.updUser(req.body, req);
+    const result = await db.updateUser(req.body, req);
     res.redirect('/createUser?message=' + result.message)
   } catch (e) {
     res.send({ error: e.message });
@@ -153,7 +153,7 @@ app.post('/api/employee/create', async (req, res) => {
 
 app.post('/api/employee/update', async (req, res) => {
   try {
-    const result = await db.updEmployee(req.body, req);
+    const result = await db.updateEmployee(req.body, req);
     res.redirect('/createEmployee?message=' + result.message)
   } catch (e) {
     res.send({ error: e.message });
@@ -269,6 +269,60 @@ app.get('/sectors', async function (req, res) {
   });
 });
 
+app.get('/createSectors', async (req, res) => {
+  const sectors = await db.getAllSectors()
+  res.render('pages/createSectors', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    sectors: sectors,
+  });
+})
+
+app.post('/api/sectors/create', async (req, res) => {
+  try {
+    const result = await db.createSectors(req.body, req);
+    res.redirect('/createSectors?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/updateSectors', async (req, res) => {
+  const sectors = await db.getAllSectors()
+  res.render('pages/updateSectors', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    sectors: sectors,
+  });
+})
+
+app.post('/api/sectors/update', async (req, res) => {
+  try {
+    const result = await db.updateSectors(req.body, req);
+    res.redirect('/updateSectors?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/deleteSectors', async (req, res) => {
+  const sectors = await db.getAllSectors()
+  res.render('pages/deleteSectors', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    sectors: sectors,
+  });
+})
+
+app.post('/api/sectors/delete', async (req, res) => {
+  try {
+    const result = await db.deleteSectors(req.body, req);
+    res.redirect('/deleteSectors?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
 app.get('/employees', async function (req, res) {
   const surnames = req.query?.surnames;
   const employees = surnames ? await db.getEmployeeBySurname(surnames) : await db.getAllEmployees()
@@ -285,6 +339,60 @@ app.get('/products', async function (req, res) {
     products: products,
     username: req.user?.username,
   });
+});
+
+app.get('/createProducts', async (req, res) => {
+  const products = await db.getAllProducts()
+  res.render('pages/createProducts', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    products: products,
+  });
+})
+
+app.post('/api/products/create', async (req, res) => {
+  try {
+    const result = await db.createProducts(req.body, req);
+    res.redirect('/createProducts?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/updateProducts', async (req, res) => {
+  const products = await db.getAllProducts()
+  res.render('pages/updateProducts', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    products: products,
+  });
+})
+
+app.post('/api/products/update', async (req, res) => {
+  try {
+    const result = await db.updateProducts(req.body, req);
+    res.redirect('/updateProducts?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.get('/deleteProducts', async (req, res) => {
+  const products = await db.getAllProducts()
+  res.render('pages/deleteProducts', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    products: products,
+  });
+})
+
+app.post('/api/products/delete', async (req, res) => {
+  try {
+    const result = await db.deleteProducts(req.body, req);
+    res.redirect('/deleteProducts?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
 });
 
 app.get('/findByNominations', async function (req, res) {
@@ -314,12 +422,66 @@ app.get('/sessions', async function (req, res) {
   });
 });
 
+app.get('/deleteSessions', async (req, res) => {
+  const sessions = await db.getAllSessions()
+  res.render('pages/deleteSessions', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    sessions: sessions,
+  });
+})
+
+app.post('/api/sessions/delete', async (req, res) => {
+  try {
+    const result = await db.deleteSessions(req.body, req);
+    res.redirect('/deleteSessions?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
 app.get('/acceptances', async function (req, res) {
   const acceptances = await db.getAllAcceptances()
   res.render('pages/acceptances', {
     acceptances: acceptances,
     username: req.user?.username,
   });
+});
+
+app.get('/deleteAcceptances', async (req, res) => {
+  const acceptances = await db.getAllAcceptances()
+  res.render('pages/deleteAcceptances', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    acceptances: acceptances,
+  });
+})
+
+app.get('/updateAcceptances', async (req, res) => {
+  const acceptances = await db.getAllAcceptances()
+  res.render('pages/updateAcceptances', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    acceptances: acceptances,
+  });
+})
+
+app.post('/api/acceptances/update', async (req, res) => {
+  try {
+    const result = await db.updateAcceptances(req.body, req);
+    res.redirect('/updateAcceptances?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.post('/api/acceptances/delete', async (req, res) => {
+  try {
+    const result = await db.deleteAcceptances(req.body, req);
+    res.redirect('/deleteAcceptances?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
 });
 
 app.get('/findByDateAccept', async function (req, res) {
@@ -357,20 +519,47 @@ app.get('/issuances', async function (req, res) {
   });
 });
 
+app.get('/deleteIssuances', async (req, res) => {
+  const issuances = await db.getAllIssuances()
+  res.render('pages/deleteIssuances', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    issuances: issuances,
+  });
+})
+
+app.get('/updateIssuances', async (req, res) => {
+  const issuances = await db.getAllIssuances()
+  res.render('pages/updateIssuances', {
+    message: req.query.message || '',
+    username: req.user?.username,
+    issuances: issuances,
+  });
+})
+
+app.post('/api/issuances/update', async (req, res) => {
+  try {
+    const result = await db.updateIssuances(req.body, req);
+    res.redirect('/updateIssuances?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
+app.post('/api/issuances/delete', async (req, res) => {
+  try {
+    const result = await db.deleteIssuances(req.body, req);
+    res.redirect('/deleteIssuances?message=' + result.message)
+  } catch (e) {
+    res.send({ error: e.message });
+  }
+});
+
 app.get('/findByDateIssue', async function (req, res) {
   const dateIssue = req.query?.dateIssue;
   const issuances = dateIssue ? await db.getByDateIssue(dateIssue) : await db.getAllIssuances()
   res.render('pages/issuances', {
     issuances: issuances,
-    username: req.user?.username,
-  });
-});
-
-app.get('/sectors', async function (req, res) {
-  const sectorId = req.query?.sectorId;
-  const sectors = sectorId ? await db.getSectorById(sectorId) : await db.getAllSectors()
-  res.render('pages/sectors', {
-    sectors: sectors,
     username: req.user?.username,
   });
 });

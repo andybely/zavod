@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>deleteAcceptances</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
+  <% if (message) { %>
+  <h4><%=message %></h4>
+  <% } %>
+  <form method='POST' action="api/acceptances/delete">
+    <h4>Удалить принятое строительное изделие</h4>
+    <input type="number" name="deleteId" placeholder="Id принятого изделия" required autocomplete="off" />
+    <button type='submit'>Удалить принятое изделие</button>
+  </form>
+  <table>
+    <caption>Список принятых строительных изделий</caption>
+    <tr>
+      <th>ID притяного изделия</th>
+      <th>Дата принятия изделия</th>
+      <th>Количество принятого изделия</th>
+      <th>Цена</th>
+      <th>Id продукта</th>
+      <th>Id сектора</th>
+      <th>Id принимающего</th>
+    </tr>
+    <% for (let acceptance of acceptances) { %>
+    <tr>
+      <td><%=acceptance.id %></td>
+      <td><%=acceptance.acceptanceDate %></td>
+      <td><%=acceptance.quantityAccepted %></td>
+      <td><%=acceptance.price %></td>
+      <td><%=acceptance.ProductId %></td>
+      <td><%=acceptance.SectorId %></td>
+      <td><%=acceptance.EmployeeId %></td>
+    </tr>
+    <%} %>
+
+  </table>
+
+  <h1><a href="admin">Назад</a></h1>
+  <h1><a href="/">На главное меню</a></h1>
+
+</body>
+
+</html>

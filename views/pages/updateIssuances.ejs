@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>updateIssuances</title>
+  <script src="/assets/jquery.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <h4 id="user">Вход выполнен через учетную запись: <%=username %></h4>
+  <% if (message) { %>
+  <h4><%=message %></h4>
+  <% } %>
+
+  <form method='POST' action="api/issuances/update">
+    <h4>Редактирование информации выданнных строительных изделий</h4>
+    <input type="number" name="updId" placeholder="ID выданного изделия" required autocomplete="off" />
+    <input type="date" name="updIssueDate" placeholder="Дата выдачи изделия" required autofocus="" autocomplete="off" />
+    <input type="number" name="updQuantityIssued" placeholder="Кол-во выданного издел." required autofocus="" autocomplete="off" />
+    <input type="number" name="updPrice" placeholder="Цена" required autofocus="" autocomplete="off" />
+    <input type="number" name="updProductId" placeholder="Id изделия" required autofocus="" autocomplete="off" />
+    <input type="number" name="updSectorId" placeholder="Id сектора" required autofocus="" autocomplete="off" />
+    <input type="number" name="updEmployeeId" placeholder="Id выдающего" required autofocus="" autocomplete="off" />
+    <button type='submit'>Обновить информацию</button>
+  </form>
+
+  <table>
+    <caption>Список выданных строительных изделий</caption>
+    <tr>
+      <th>ID выданного изделия</th>
+      <th>Дата выдачи изделия</th>
+      <th>Количество выданного изделия</th>
+      <th>Цена</th>
+      <th>Id продукта</th>
+      <th>Id сектора</th>
+      <th>Id выдающего</th>
+    </tr>
+    <% for (let issuance of issuances) { %>
+    <tr>
+      <td><%=issuance.id %></td>
+      <td><%=issuance.issueDate %></td>
+      <td><%=issuance.quantityIssued %></td>
+      <td><%=issuance.price %></td>
+      <td><%=issuance.ProductId %></td>
+      <td><%=issuance.SectorId %></td>
+      <td><%=issuance.EmployeeId %></td>
+    </tr>
+    <%} %>
+
+  </table>
+  
+  <h1><a href="admin">Назад</a></h1>
+  <h1><a href="/">На главное меню</a></h1>
+
+</body>
+
+</html>

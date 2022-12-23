@@ -632,7 +632,7 @@ class Database {
     return { message: "Пользователь " + body.username + " успешно добавлен!" };
   }
 
-  async updUser(body, req) {
+  async updateUser(body, req) {
 
     if (!req.user) {
       return { message: "Вы не авторизованы!" };

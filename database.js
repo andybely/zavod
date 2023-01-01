@@ -808,6 +808,10 @@ class Database {
         id: body.ProductId,
       }
     })
+    
+    if (parseInt(issue.quantity) < parseInt(body.quantityIssued)){
+      return { message: "Недостаточное количество строительного изделия на складе!" };
+    }
 
     issue.quantity = parseInt(issue.quantity) - parseInt(body.quantityIssued),
       await issue.save()
